@@ -3,7 +3,9 @@ const $formSelect = document.querySelector(".form__select")
 const $gallery = document.querySelector(".gallery")
 const BreedsWithSubBreeds = []
 
-async function getDogsBreeds() {
+async function init() {
+
+	randomDogs()
 
 	const { message: dogBreeds } = await fetch("https://dog.ceo/api/breeds/list/all")
 		.then(response => response.json())
@@ -22,6 +24,10 @@ async function getDogsBreeds() {
 		}
 
 		const breedSelected = event.target.value
+		if (breedSelected === "random dogs") {
+			randomDogs()
+			return
+		}
 
 		if (dogBreeds[breedSelected].length > 0) {
 			const $select = document.createElement("select")
@@ -81,5 +87,10 @@ function removeAllChildNodes(parent) {
 	}
 }
 
-getDogsBreeds()
+async function randomDogs() {
+	const { message: images } = await fetch("https://dog.ceo/api/breeds/image/random/6").then(response => response.json())
+	printImages(images)
+}
+
+init()
 
